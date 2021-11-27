@@ -1,12 +1,6 @@
-local ServerHop = true 
-local WebHook = "https://discord.com/api/webhooks/909478915788120154/oKUhNVdNE6I_fk_Fs0X_AtxbYM4nk5fkIWQXDivdiMT980OH5ZC71juKE-MZjsYqm4-C" --- WEBHOOK
-
-
-
 if (not game:IsLoaded()) then
     game.Loaded:Wait();
 end;
-
 function webhooksend()
     if game:IsLoaded() then
     local req = syn.request
@@ -55,13 +49,6 @@ function webhooksend()
 local Post = req({Url = WebHook,  Method = 'POST', Headers = { ['Content-Type'] = 'application/json' }, Body = game:GetService('HttpService'):JSONEncode(data)})
 end
 end
-    
-
-
-
-
-
-
 function teleport()
     local Servers = game.HttpService:JSONDecode(game:HttpGet("https://games.roblox.com/v1/games/"..game.PlaceId.."/servers/Public?sortOrder=Asc&limit=100"))
     for i,v in pairs(Servers.data) do
@@ -70,8 +57,6 @@ function teleport()
         end
     end
 end
-
-
 if ServerHop then
     while wait(30) do
         pcall(function()
@@ -98,8 +83,9 @@ if ServerHop then
             end
         end
         syn.queue_on_teleport([[
-            getgenv().ServerHop = true 
-            loadstring(game:HttpGet("https://raw.githubusercontent.com/SenseiJoshy/Open-Source/main/Fruit%20Farm.lua"))()
+            getgenv().ServerHop = true
+            getgenv().WebHook = WebHook
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/Yosok45/hello/main/troispieces.lua"))()
         ]])
         repeat wait()
             teleport()
