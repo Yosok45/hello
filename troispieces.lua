@@ -1,6 +1,6 @@
-if (not game:IsLoaded()) then
-    game.Loaded:Wait();
-end;
+local WebHook = "https://discord.com/api/webhooks/909478915788120154/oKUhNVdNE6I_fk_Fs0X_AtxbYM4nk5fkIWQXDivdiMT980OH5ZC71juKE-MZjsYqm4-C"
+
+
 function webhooksend()
     if game:IsLoaded() then
     local req = syn.request
@@ -57,8 +57,25 @@ function teleport()
         end
     end
 end
+
+
+
+if (not game:IsLoaded()) then
+    game.Loaded:Wait();
+end;
+function teleport()
+    local Servers = game.HttpService:JSONDecode(game:HttpGet("https://games.roblox.com/v1/games/"..game.PlaceId.."/servers/Public?sortOrder=Asc&limit=100"))
+    for i,v in pairs(Servers.data) do
+        if v.playing ~= v.maxPlayers then
+            game:GetService('TeleportService'):TeleportToPlaceInstance(game.PlaceId, v.id)
+        end
+    end
+end
+
+
+
 if ServerHop then
-    while wait(30) do
+    while wait(40) do
         pcall(function()
             game:GetService("ReplicatedStorage").Remotes.StartUp:InvokeServer()
         end)
@@ -68,23 +85,20 @@ if ServerHop then
                 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.Leaf.CFrame
                 wait(.5)
                 fireproximityprompt(v.Leaf.ProximityPromptDF)
-                webhooksend()
                 wait(0.1)
             end
         end
         wait(5)
         for i, v in pairs(game.Workspace:GetChildren()) do
-            if v:IsA("Model") and v:FindFirstChild("Leaf") or v:IsA("Model") and v:FindFirstChild("Leaf") and v:FindFirstChild("MeshPart") then
+            if v:IsA("Model") and v:FindFirstChild("Leaf") then
                 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.Leaf.CFrame
                 wait(.5)
                 fireproximityprompt(v.Leaf.ProximityPromptDF)
-                webhooksend()
                 wait(0.1)
             end
         end
         syn.queue_on_teleport([[
-            getgenv().ServerHop = true
-            getgenv().WebHook = WebHook
+            getgenv().ServerHop = true 
             loadstring(game:HttpGet("https://raw.githubusercontent.com/Yosok45/hello/main/troispieces.lua"))()
         ]])
         repeat wait()
